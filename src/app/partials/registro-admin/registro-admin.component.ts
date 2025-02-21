@@ -1,4 +1,6 @@
+import { AdministradoresService } from './../../services/administradores.service';
 import { Component, Input, OnInit } from '@angular/core';
+declare var $:any;
 
 @Component({
   selector: 'app-registro-admin',
@@ -19,9 +21,14 @@ export class RegistroAdminComponent implements OnInit{
   public inputType_1: string = 'password';
   public inputType_2: string = 'password';
 
-  constructor(){}
+  constructor(
+    private administradoresService: AdministradoresService
+  ){}
 
   ngOnInit(): void {
+    this.admin = this.administradoresService.esquemaAdmin();
+    this.admin.rol = this.rol;
+    console.log("Los datos del admin son: ", this.admin);
 
   }
 
@@ -55,7 +62,19 @@ export class RegistroAdminComponent implements OnInit{
   }
 
   public registrar(){
+    //Validación del formulario
+    this.errors = [];
 
+    this.errors = this.administradoresService.validarAdmin(this.admin, this.editar);
+    if(!$.isEmptyObject(this.errors)){
+      return false;
+    }
+    if(this.admin.password == this.admin.confirmar_password){
+      //Ejecuta
+    }else{
+      alert("Las contraseñas no coinciden");
+    }
+    // TODO:Aquí va la demás funcionalidad para registrar
   }
 
   public actualizar(){
