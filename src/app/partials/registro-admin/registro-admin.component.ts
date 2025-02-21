@@ -1,5 +1,6 @@
 import { AdministradoresService } from './../../services/administradores.service';
 import { Component, Input, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 declare var $:any;
 
 @Component({
@@ -22,6 +23,7 @@ export class RegistroAdminComponent implements OnInit{
   public inputType_2: string = 'password';
 
   constructor(
+    private location: Location,
     private administradoresService: AdministradoresService
   ){}
 
@@ -58,7 +60,7 @@ export class RegistroAdminComponent implements OnInit{
   }
 
   public regresar(){
-
+    this.location.back();
   }
 
   public registrar(){
