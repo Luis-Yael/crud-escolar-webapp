@@ -1,6 +1,7 @@
-import { AdministradoresService } from './../../services/administradores.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { AdministradoresService } from 'src/app/services/administradores.service';
+import { Router } from '@angular/router';
 declare var $:any;
 
 @Component({
@@ -15,6 +16,7 @@ export class RegistroAdminComponent implements OnInit{
   public admin:any = {};
   public errors:any = {};
   public editar:boolean = false;
+  public token: string = "";
 
   //Para contraseñas
   public hide_1: boolean = false;
@@ -24,14 +26,14 @@ export class RegistroAdminComponent implements OnInit{
 
   constructor(
     private location: Location,
-    private administradoresService: AdministradoresService
+    private administradoresService: AdministradoresService,
+    private router: Router
   ){}
 
   ngOnInit(): void {
     this.admin = this.administradoresService.esquemaAdmin();
     this.admin.rol = this.rol;
     console.log("Los datos del admin son: ", this.admin);
-
   }
 
   //Funciones para password
@@ -71,12 +73,31 @@ export class RegistroAdminComponent implements OnInit{
     if(!$.isEmptyObject(this.errors)){
       return false;
     }
+    //Validar la contraseña
     if(this.admin.password == this.admin.confirmar_password){
-      //Ejecuta
+      //Aquí se va a ejecutar la lógica de programación para registrar un usuario
+      this.administradoresService.registrarAdmin(this.admin).subscribe(
+        (response)=>{
+          //Aquí va la ejecución del servicio si todo es correcto
+          alert("Usuario registrado correctamente");
+          console.log("Usuario registrado: ", response);
+          if(this.token != ""){
+            this.router.navigate(["home"]);
+          }else{
+            this.router.navigate(["/"]);
+          }
+        }, (error)=>{
+          //Aquí se ejecuta el error
+          alert("No se pudo registrar usuario");
+        }
+      );
+
+
     }else{
       alert("Las contraseñas no coinciden");
+      this.admin.password="";
+      this.admin.confirmar_password="";
     }
-    // TODO:Aquí va la demás funcionalidad para registrar
   }
 
   public actualizar(){

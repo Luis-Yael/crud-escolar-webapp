@@ -7,7 +7,6 @@
           <label class="title-user" for="tipo_usuario">Ingresa los datos del alumno</label>
         </div>
       </div>
-      <!-- Aquí inician los campos del formulario -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>ID/Matrícula</mat-label>
         <input matInput [(ngModel)]="alumno.matricula" mask="000000000" name="id" placeholder="Escribe ID o matrícula">
@@ -86,6 +85,7 @@
           <input matInput [(ngModel)]="alumno.ocupacion" placeholder="Escribe teléfono" (keypress)="soloLetras($event)">
       </mat-form-field>
       <div *ngIf="errors.ocupacion" class="invalid-feedback">{{ errors.ocupacion }}</div>
+
       <div class="section-buttons">
         <button class="btn btn-danger" (click)="regresar()">Cancelar</button>
         <button *ngIf="!editar" class="btn btn-primary" type="submit" (click)="registrar()">Registrar</button>
